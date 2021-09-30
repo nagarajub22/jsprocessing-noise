@@ -6,21 +6,19 @@ function Wave(props: any) {
     const ref: any = useRef<any>();
     const clock = new Clock(true);
 
-    const n = 500;
-    const points = [];
+    const count = 500;
 
-    const mapValueToGrid = (value: number, min1: number, max1: number, min2: number, max2: number) => {
-        return min2 + (value - min1) * (max2 - min2) / (max1 - min1);
+    const positions = new Float32Array(count * 3);
+    const positionIndices = new Float32Array(count);
+
+    for (let i = 0; i < count; i++) {
+        const x = 0;
+        const y = 0;
+        const z = 0;
+
+        positions.set([x, y, z], 3);
+        positionIndices.set([i], i);
     }
-
-    for (let i = 0; i < n; i++) {
-        const x = mapValueToGrid(Math.random(), 0.0, 1.0, -5.0, 5.0);
-        const y = mapValueToGrid(Math.random(), 0.0, 1.0, 0.0, 1.0);
-        const z = mapValueToGrid(Math.random(), 0.0, 1.0, -5.0, 5.0);
-
-        points.push(x, y, z);
-    }
-    const positions = new Float32Array(points);
 
     const canvas = document.getElementsByTagName('canvas')[0];
     const uniforms = {
@@ -31,9 +29,9 @@ function Wave(props: any) {
     }
 
     useFrame(() => {
-        if (ref && ref.current && ref.current.material && ref.current.material.uniforms) {
-            ref.current.material.uniforms.u_time.value = clock.getElapsedTime();
-        }
+        // if (ref && ref.current && ref.current.material && ref.current.material.uniforms) {
+        //     ref.current.material.uniforms.u_time.value = clock.getElapsedTime();
+        // }
     });
 
     const vertexShader = `
@@ -64,9 +62,8 @@ function Wave(props: any) {
     const fragmentShader = `
         precision highp float;
         #define GLSLIFY 1;
-
         void main () {
-            gl_FragColor = vec4(vec3(1.0), 1.0);
+            gl_FragColor = vec4(0.,0.,0., 1.0);
         }
     `;
 
@@ -83,7 +80,14 @@ function Wave(props: any) {
                     attachObject={["attributes", "position"]}
                     array={positions}
                     itemSize={3}
-                    count={positions.length / 3}
+                    count={count}
+                />
+
+                <bufferAttribute
+                    attachObject={["attributes", "number"]}
+                    array={positionIndices}
+                    itemSize={1}
+                    count={count}
                 />
 
             </bufferGeometry>
