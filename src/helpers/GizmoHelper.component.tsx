@@ -7,13 +7,13 @@ function CGizmoHelper(props: any) {
 
     return (
         <>
-            <GizmoHelper
+            {/* <GizmoHelper
                 alignment="bottom-right" // widget alignment within scene
                 onTarget={() => controlRef?.current?.target}
                 onUpdate={() => controlRef.current?.update()}
             >
                 <GizmoViewport axisColors={['red', 'green', 'blue']} labelColor="black" />
-            </GizmoHelper>
+            </GizmoHelper> */}
             <OrbitControls ref={controlRef} />
         </>
     )
