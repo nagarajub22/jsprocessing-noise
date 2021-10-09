@@ -6,7 +6,7 @@ function Wave(props: any) {
     const ref: any = useRef<any>();
     const clock = new Clock(true);
 
-    const count = 500;
+    const count = 1000;
 
     const positions = new Float32Array(count * 3);
     const positionIndices = new Float32Array(count);
@@ -29,9 +29,9 @@ function Wave(props: any) {
     }
 
     useFrame(() => {
-        // if (ref && ref.current && ref.current.material && ref.current.material.uniforms) {
-        //     ref.current.material.uniforms.u_time.value = clock.getElapsedTime();
-        // }
+        if (ref && ref.current && ref.current.material && ref.current.material.uniforms) {
+            ref.current.material.uniforms.u_time.value = clock.getElapsedTime();
+        }
     });
 
     const vertexShader = `
@@ -44,6 +44,7 @@ function Wave(props: any) {
         uniform float u_time;
 
         attribute vec3 position;
+        attribute float number;
 
         float random (in float x) {
             return fract(sin(x)*1e4);
@@ -53,17 +54,37 @@ function Wave(props: any) {
             return min2 + (value - min1) * (max2 - min2) / (max1 - min1);
         }
 
+        float PI = 3.1415926535897932384626433832795;
+        float a = 15.0;
+        float radius = 12.0;
+
         void main(){
             vec3 pos = position.xyz;
+
+            // pos.x = a + b * sin(number * 45. + u_time);
+            // pos.z = a + b * sin(number * 45. + u_time);
+            // pos.y = sin(number);
+
+            float speedScale = 0.0001;
+            float speed = u_time * speedScale;
+
+            pos.x = radius * sin(number * 270. + speed);
+            pos.z = radius * cos(number * 270. + speed);
+            pos.y = a + radius * sin(number * speed);
+
             gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
-            gl_PointSize = 50.0;
+            gl_PointSize = 5.0;
         }
     `;
     const fragmentShader = `
         precision highp float;
         #define GLSLIFY 1;
         void main () {
-            gl_FragColor = vec4(0.,0.,0., 1.0);
+
+            float leng = length(gl_PointCoord - vec2(0.5));
+            if(leng > 0.2) discard;
+
+            gl_FragColor = vec4(1.,1.,1., 1.0);
         }
     `;
 
