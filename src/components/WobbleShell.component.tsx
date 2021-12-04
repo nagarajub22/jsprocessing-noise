@@ -25,8 +25,8 @@ export default function WobbleShell(props: any) {
     useFrame(() => {
         if (ref && ref.current && ref.current.material && ref.current.material.uniforms) {
             ref.current.material.uniforms.u_time.value = clock.getElapsedTime();
-            ref.current.rotation.y -= 0.005;
-            ref.current.rotation.x -= 0.005;
+            // ref.current.rotation.y -= 0.005;
+            // ref.current.rotation.x -= 0.005;
         }
     });
 
@@ -35,11 +35,8 @@ export default function WobbleShell(props: any) {
         <mesh
             ref={ref}
         >
-            {/* <sphereBufferGeometry args={[3, 128, 128]} attach={"geometry"} onUpdate={
-                (self) => self.computeVertexNormals()
-            } /> */}
-            <icosahedronBufferGeometry
-                args={[3, 10]}
+            {/* <icosahedronBufferGeometry
+                args={[3, 15]}
                 attach="geometry"
                 onUpdate={
                     self => {
@@ -47,7 +44,11 @@ export default function WobbleShell(props: any) {
                         self.computeVertexNormals();
                     }
                 }
-            />
+            /> */}
+
+            <sphereBufferGeometry args={[3, 32, 32]} attach={"geometry"} onUpdate={
+                (self) => self.computeVertexNormals()
+            } />
             <shaderMaterial
                 attach={"material"}
                 side={DoubleSide}
@@ -56,6 +57,8 @@ export default function WobbleShell(props: any) {
                 fragmentShader={fragmentShader}
                 transparent={true}
                 lights={false}
+                // wireframe={true}
+                // wireframeLinewidth={1.0}
             />
         </mesh>
     )

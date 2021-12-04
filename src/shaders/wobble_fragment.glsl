@@ -7,8 +7,10 @@ varying vec3 vNormal;
 varying float vPerlin;
 varying vec2 vUV;
 
-void main() {
+float ambientIntensity = 0.2;
+vec3 ambientColor = vec3(0.12);
 
-    vec3 color = vec3(0.57);
-    gl_FragColor = vec4(color  * vPerlin, 1.0);
+void main() {
+    vec3 color = ambientColor * ambientIntensity;
+    gl_FragColor = vec4(color, 1.0);
 }

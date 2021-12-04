@@ -28,4 +28,5 @@ void main() {
     displacement += normalize(position) * perlin * u_displacementDistance;
 
     gl_Position = projectionMatrix * modelViewMatrix * vec4(displacement, 1);
+    gl_PointSize = 30.0;
 }

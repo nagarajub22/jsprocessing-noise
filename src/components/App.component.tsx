@@ -14,7 +14,7 @@ function App(props: Props) {
     <Canvas
       camera={{ fov: 100, near: 1, far: 1000, aspect: window.innerWidth / window.innerHeight, position: [0, 2, 6] }}
     >
-      <color attach={"background"} args={["#000"]} />
+      <color attach={"background"} args={["orange"]} />
       {/* <gridHelper /> */}
       <ambientLight intensity={0.1}/>
       <CGizmoHelper/>
